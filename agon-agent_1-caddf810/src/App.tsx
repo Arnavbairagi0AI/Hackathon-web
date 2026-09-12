@@ -29,7 +29,6 @@ const InvestorProfile = lazy(() => import('./pages/Profiles').then(m => ({ defau
 const Content = {
   FAQ: lazy(() => import('./pages/Content').then(m => ({ default: m.FAQBody }))),
   Events: lazy(() => import('./pages/Content').then(m => ({ default: m.EventsBody }))),
-  Learning: lazy(() => import('./pages/Content').then(m => ({ default: m.LearningBody }))),
   Schemes: lazy(() => import('./pages/Content').then(m => ({ default: m.SchemesBody }))),
   News: lazy(() => import('./pages/Content').then(m => ({ default: m.NewsBody }))),
   Market: lazy(() => import('./pages/Content').then(m => ({ default: m.MarketBody }))),
@@ -84,7 +83,6 @@ export default function App() {
 
             {/* public content */}
             <Route path="/events" element={<LP><Content.Events /></LP>} />
-            <Route path="/learning" element={<LP><Content.Learning /></LP>} />
             <Route path="/market" element={<LP><Content.Market /></LP>} />
             <Route path="/schemes" element={<LP><Content.Schemes /></LP>} />
             <Route path="/news" element={<LP><Content.News /></LP>} />
@@ -115,7 +113,6 @@ export default function App() {
               <Route path="profile" element={<Guard roles={['investor']}><L><InvestorProfile /></L></Guard>} />
               <Route path="admin" element={<Guard roles={['admin']}><L><Admin /></L></Guard>} />
               <Route path="events" element={<L><Content.Events /></L>} />
-              <Route path="learning" element={<L><Content.Learning /></L>} />
               <Route path="market" element={<L><Content.Market /></L>} />
               <Route path="schemes" element={<L><Content.Schemes /></L>} />
               <Route path="news" element={<L><Content.News /></L>} />

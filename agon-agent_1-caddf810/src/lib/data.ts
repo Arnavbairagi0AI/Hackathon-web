@@ -1,4 +1,4 @@
-import type { User, Startup, Investor, Thread, Channel, Notice, VEvent, Track, Scheme, News, Faq, Audit, Flag } from './types';
+import type { User, Startup, Investor, Thread, Channel, Notice, VEvent, Scheme, News, Faq, Audit, Flag } from './types';
 import { MIN, HOUR, DAY } from './format';
 
 const now = Date.now();
@@ -497,16 +497,6 @@ export const seedEvents: VEvent[] = [
   { id: 'ev-4', title: 'Climate Capital Conclave — South Chapter', kind: 'Conference', date: 'Fri, 28 Mar 2025', time: '09:30 IST', where: 'Chennai · IIT-MRP', host: 'Sakhi Impact', seats: 220, left: 104, desc: 'Agri, EV and circular-economy founders meet 40 impact funds. Field-pilot showcases, blended-finance panels and 1:1 curated meetings.', tags: ['Climate', 'AgriTech'] },
   { id: 'ev-5', title: 'Angel Syndicate Open House', kind: 'Networking', date: 'Wed, 12 Mar 2025', time: '19:00 IST', where: 'Bengaluru · UB City', host: 'K2 Angels', seats: 80, left: 31, desc: 'New-to-venture operators learn syndicate mechanics: carry, SPVs, and how pooled ₹50L–₹3Cr cheques are constructed.', tags: ['Angels', 'First cheque'] },
   { id: 'ev-6', title: 'GAAP for Founders — Close the Books Faster', kind: 'Masterclass', date: 'Mon, 24 Mar 2025', time: '16:00 IST', where: 'Virtual', host: 'Ledgerly Academy', seats: 300, left: 181, desc: 'From 9-day closes to 36 hours: the exact workflow stack, controls and audit practices used by the fastest finance teams.', tags: ['Finance', 'Ops'] },
-];
-
-/* ---------------------------------------------------------------- learning */
-export const seedTracks: Track[] = [
-  { id: 'lt-1', title: 'Seed Fundraising, End to End', level: 'Core', mins: 240, lessons: 12, done: 8, author: 'Meera Krishnan · Ardent Peak', hue: 232, desc: 'From narrative construction to data rooms, IC dynamics and closing mechanics — taught from the investor side of the table.', tags: ['Fundraising', 'Seed'] },
-  { id: 'lt-2', title: 'Financial Mastery for Non-Finance Founders', level: 'Core', mins: 180, lessons: 9, done: 5, author: 'Ledgerly Finance Guild', hue: 36, desc: 'Burn, runway, CAC/LTV, burn multiples, revenue recognition — the exact metrics investors will interrogate, with worksheets.', tags: ['Finance', 'Metrics'] },
-  { id: 'lt-3', title: 'The Pitch-Deck Studio', level: 'Workshop', mins: 150, lessons: 7, done: 0, author: 'Narrative Lab', hue: 205, desc: 'Slide-by-slide archetypes for problem, wedge, moat and ask — annotated from 200 decks that raised.', tags: ['Deck', 'Story'] },
-  { id: 'lt-4', title: 'Regulatory Readiness: Fintech & Health', level: 'Advanced', mins: 210, lessons: 10, done: 2, author: 'IndusLaw × RBIH alumni', hue: 96, desc: 'Sandbox strategy, FLDG constructs, ABDM integration, and the licensing map founders misread most.', tags: ['Compliance'] },
-  { id: 'lt-5', title: 'B2B GTM: Founder-Led Sales to Scale', level: 'Growth', mins: 160, lessons: 8, done: 0, author: 'Kavitha Rao · Meridian', hue: 326, desc: 'ICP discipline, pricing conversations, hiring the first AE, and the transition investors underwrite.', tags: ['GTM', 'Sales'] },
-  { id: 'lt-6', title: 'Cap Tables & ESOPs Without Regret', level: 'Core', mins: 90, lessons: 5, done: 1, author: 'Trust & Equity Project', hue: 18, desc: 'Dilution math, pool sizing, co-founder vesting, and the clauses that matter three rounds later.', tags: ['Legal', 'Equity'] },
 ];
 
 /* ----------------------------------------------------------------- schemes */

@@ -56,7 +56,6 @@ function useNav(): NavSection[] {
 function resItems(founder: boolean): NavItem[] {
   return [
     { to: '/app/events', icon: <Landmark size={17} />, key: 'nav.events' },
-    { to: '/app/learning', icon: <GraduationCap size={17} />, key: 'nav.learning' },
     { to: '/app/market', icon: <Building2 size={17} />, key: 'nav.market' },
     { to: '/app/schemes', icon: <Briefcase size={17} />, key: 'nav.schemes' },
     // The scheme-eligibility journey is founder-guarded in App.tsx; only

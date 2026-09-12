@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   ChevronDown, HelpCircle, CalendarDays, MapPin, Users2, CheckCircle2, GraduationCap, Clock4,
-  PlayCircle, Newspaper, ArrowUpRight, Building2, Bookmark, BookmarkCheck, Search, Sparkles, BookOpen, Landmark,
+  Newspaper, ArrowUpRight, Building2, Bookmark, BookmarkCheck, Search, Sparkles, Landmark,
 } from 'lucide-react';
 import { Logo, Card, CardHead, Chip, Btn, Bar, Modal, toast, Reveal } from '../components/ui';
 import { useApp } from '../lib/store';
@@ -19,7 +19,7 @@ export function PublicChrome({ children }: { children: ReactNode }) {
         <div className="mx-auto flex h-16 max-w-6xl items-center gap-4 px-5">
           <Link to="/"><Logo /></Link>
           <nav className="ml-4 hidden items-center gap-1 md:flex">
-            {[['Events', '/events'], ['Learning', '/learning'], ['Market', '/market'], ['Schemes', '/schemes'], ['News', '/news'], ['FAQ', '/faq']].map(([l, to]) => (
+            {[['Events', '/events'], ['Market', '/market'], ['Schemes', '/schemes'], ['News', '/news'], ['FAQ', '/faq']].map(([l, to]) => (
               <Link key={to} to={to} className="rounded-lg px-3 py-2 text-[12.5px] font-medium text-white/55 transition hover:bg-white/[.05] hover:text-white">{l}</Link>
             ))}
           </nav>
@@ -161,63 +161,6 @@ export function EventsBody() {
           </Reveal>
         ))}
       </div>
-    </div>
-  );
-}
-
-/* ================================================================ LEARNING */
-export function LearningBody() {
-  const { db, user, progressLesson } = useApp();
-  const nav = useNavigate();
-  const [modal, setModal] = useState<string | null>(null);
-  const track = db.tracks.find(tr => tr.id === modal);
-  return (
-    <div>
-      <PageHero kicker="Operator-grade curriculum" title={<>The <span className="serif-i text-grad-gold">Learning Studio</span></>}
-        sub="Fundraising, finance, legal and GTM tracks — written from the investor side of the table, with worksheets that plug into your profile." />
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {db.tracks.map((tr, i) => {
-          const pct = Math.round((tr.done / tr.lessons) * 100);
-          return (
-            <Reveal key={tr.id} delay={i * 0.06}>
-              <Card hover className="group flex h-full cursor-pointer flex-col p-5" >
-                <button className="flex-1 text-left" onClick={() => setModal(tr.id)}>
-                  <span className="mb-4 flex h-11 w-11 items-center justify-center rounded-xl text-ink-950" style={{ background: `linear-gradient(135deg, hsl(${tr.hue} 62% 66%), hsl(${tr.hue + 30} 58% 44%))` }}><BookOpen size={17} /></span>
-                  <div className="flex items-center gap-2"><Chip tone={tr.level === 'Core' ? 'gold' : tr.level === 'Advanced' ? 'rose' : 'iris'}>{tr.level}</Chip><span className="flex items-center gap-1 text-[11px] text-white/38"><Clock4 size={10} /> {tr.mins} min · {tr.lessons} lessons</span></div>
-                  <h3 className="mt-2.5 text-[16px] font-semibold leading-snug text-white group-hover:a-text">{tr.title}</h3>
-                  <p className="mt-1.5 line-clamp-2 text-[12.5px] leading-relaxed text-white/48">{tr.desc}</p>
-                  <p className="mt-2 text-[11px] text-white/35">by {tr.author}</p>
-                </button>
-                <div className="mt-4 border-t border-white/[.06] pt-3.5">
-                  <div className="mb-1.5 flex justify-between text-[10.5px] text-white/40"><span>{tr.done}/{tr.lessons} lessons</span><span className="font-mono">{pct}%</span></div>
-                  <Bar value={pct} thin tone={pct === 100 ? 'jade' : 'acc'} />
-                  <Btn size="sm" variant={tr.done > 0 ? 'accent' : 'outline'} className="mt-3 w-full"
-                    onClick={() => { if (!user) { nav('/login'); return; } progressLesson(tr.id); toast(tr.done + 1 >= tr.lessons ? `“${tr.title}” completed — certificate issued` : 'Lesson completed — progress saved'); }}>
-                    <PlayCircle size={13} /> {tr.done === 0 ? 'Start track' : tr.done >= tr.lessons ? 'Replay track' : `Continue · L${tr.done + 1}`}
-                  </Btn>
-                </div>
-              </Card>
-            </Reveal>
-          );
-        })}
-      </div>
-      <Modal open={!!track} onClose={() => setModal(null)} title={track?.title ?? ''}>
-        {track && (
-          <div>
-            <p className="text-[13px] leading-relaxed text-white/60">{track.desc}</p>
-            <div className="mt-4 space-y-2">
-              {Array.from({ length: track.lessons }).map((_, i) => (
-                <div key={i} className={`flex items-center gap-3 rounded-lg border px-3.5 py-2.5 text-[12.5px] ${i < track.done ? 'border-emerald-400/20 bg-emerald-400/[.05] text-white/70' : 'border-white/[.08] text-white/45'}`}>
-                  {i < track.done ? <CheckCircle2 size={14} className="text-emerald-400" /> : <span className="flex h-3.5 w-3.5 items-center justify-center rounded-full border border-white/25 font-mono text-[8px]">{i + 1}</span>}
-                  <span className="flex-1">Lesson {i + 1}: {['Orientation', 'Core frameworks', 'Case teardown', 'Worksheet sprint', 'Live Q&A'][i % 5]}</span>
-                  <span className="font-mono text-[10px] text-white/30">{14 + i * 3}m</span>
-                </div>
-              ))}
-            </div>
-            <p className="mt-4 text-[11.5px] text-white/40">Mentor: {track.author} · graduation adds a verified credential to your profile.</p>
-          </div>
-        )}
-      </Modal>
     </div>
   );
 }

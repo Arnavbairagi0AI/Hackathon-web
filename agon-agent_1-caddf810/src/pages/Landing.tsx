@@ -26,7 +26,6 @@ function LandingNav() {
   const links = [
     { label: 'Platform', to: '/#lifecycle' },
     { label: 'Events', to: '/events' },
-    { label: 'Learning', to: '/learning' },
     { label: 'News', to: '/news' },
   ];
   return (
@@ -428,7 +427,7 @@ export default function Landing() {
             <div className="mt-5 flex gap-2"><Chip tone="jade">SOC-2 aligned</Chip><Chip>ISO 27001</Chip><Chip>DPDP ready</Chip></div>
           </div>
           {[['Platform', [['AI Matching', '/signup'], ['Founder community', '/signup'], ['Investor network', '/signup'], ['Funding tracker', '/signup']]],
-            ['Resources', [['Funding events', '/events'], ['Learning studio', '/learning'], ['Market access', '/market'], ['Schemes & policies', '/schemes'], ['Startup news', '/news'], ['FAQ', '/faq']]],
+            ['Resources', [['Funding events', '/events'], ['Market access', '/market'], ['Schemes & policies', '/schemes'], ['Startup news', '/news'], ['FAQ', '/faq']]],
             ['Trust', [['Security model', '/faq'], ['Verification protocol', '/faq'], ['Audit logging', '/faq'], ['Privacy & DPDP', '/faq']]]].map(([h, items]) => (
             <div key={h as string}>
               <h4 className="text-[11px] font-semibold uppercase tracking-[0.16em] text-white/35">{h as string}</h4>

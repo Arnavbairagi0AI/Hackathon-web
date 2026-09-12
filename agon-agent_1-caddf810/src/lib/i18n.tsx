@@ -5,7 +5,7 @@ const dict: Record<Lang, Record<string, string>> = {
   en: {
     'nav.dashboard': 'Dashboard', 'nav.matching': 'AI Matching', 'nav.profileF': 'My Startup', 'nav.profileI': 'My Profile',
     'nav.community': 'Community', 'nav.messages': 'Messages', 'nav.tracker': 'Funding Tracker', 'nav.pipeline': 'Pipeline',
-    'nav.notifications': 'Notifications', 'nav.admin': 'Admin Console', 'nav.events': 'Funding Events', 'nav.learning': 'Learning Studio',
+    'nav.notifications': 'Notifications', 'nav.admin': 'Admin Console', 'nav.events': 'Funding Events',
     'nav.market': 'Market Access', 'nav.schemes': 'Schemes & Policies', 'nav.news': 'Startup News', 'nav.faq': 'FAQ',
     'nav.login': 'Sign in', 'nav.start': 'Get started', 'nav.logout': 'Log out',
     'sec.overview': 'Overview', 'sec.network': 'Network', 'sec.resources': 'Resources',
@@ -21,7 +21,7 @@ const dict: Record<Lang, Record<string, string>> = {
   hi: {
     'nav.dashboard': 'डैशबोर्ड', 'nav.matching': 'AI मैचिंग', 'nav.profileF': 'मेरा स्टार्टअप', 'nav.profileI': 'मेरी प्रोफ़ाइल',
     'nav.community': 'समुदाय', 'nav.messages': 'संदेश', 'nav.tracker': 'फंडिंग ट्रैकर', 'nav.pipeline': 'पाइपलाइन',
-    'nav.notifications': 'सूचनाएँ', 'nav.admin': 'एडमिन कंसोल', 'nav.events': 'फंडिंग इवेंट्स', 'nav.learning': 'लर्निंग स्टूडियो',
+    'nav.notifications': 'सूचनाएँ', 'nav.admin': 'एडमिन कंसोल', 'nav.events': 'फंडिंग इवेंट्स',
     'nav.market': 'मार्केट एक्सेस', 'nav.schemes': 'योजनाएँ व नीतियाँ', 'nav.news': 'स्टार्टअप समाचार', 'nav.faq': 'प्रश्नोत्तर',
     'nav.login': 'साइन इन', 'nav.start': 'शुरू करें', 'nav.logout': 'लॉग आउट',
     'sec.overview': 'अवलोकन', 'sec.network': 'नेटवर्क', 'sec.resources': 'संसाधन',
@@ -37,7 +37,7 @@ const dict: Record<Lang, Record<string, string>> = {
   ta: {
     'nav.dashboard': 'டாஷ்போர்டு', 'nav.matching': 'AI பொருத்தம்', 'nav.profileF': 'என் ஸ்டார்ட்அப்', 'nav.profileI': 'என் சுயவிவரம்',
     'nav.community': 'சமூகம்', 'nav.messages': 'செய்திகள்', 'nav.tracker': 'நிதி டிராக்கர்', 'nav.pipeline': 'பைப்லைன்',
-    'nav.notifications': 'அறிவிப்புகள்', 'nav.admin': 'நிர்வாகம்', 'nav.events': 'நிதி நிகழ்வுகள்', 'nav.learning': 'கற்றல் ஸ்டூடியோ',
+    'nav.notifications': 'அறிவிப்புகள்', 'nav.admin': 'நிர்வாகம்', 'nav.events': 'நிதி நிகழ்வுகள்',
     'nav.market': 'சந்தை அணுகல்', 'nav.schemes': 'திட்டங்கள் & கொள்கைகள்', 'nav.news': 'ஸ்டார்ட்அப் செய்திகள்', 'nav.faq': 'கேள்விகள்',
     'nav.login': 'உள்நுழை', 'nav.start': 'தொடங்கு', 'nav.logout': 'வெளியேறு',
     'sec.overview': 'கண்ணோட்டம்', 'sec.network': 'நெட்வொர்க்', 'sec.resources': 'வளங்கள்',
