@@ -77,6 +77,8 @@ export default function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/signup" element={<SignupPage />} />
+            {/* convenience alias — people type /get-started; same signup page */}
+            <Route path="/get-started" element={<Navigate to="/signup" replace />} />
             <Route path="/forgot" element={<ForgotPage />} />
             <Route path="/onboarding/founder" element={<OnbGuard><FounderOnboarding /></OnbGuard>} />
             <Route path="/onboarding/investor" element={<OnbGuard><InvestorOnboarding /></OnbGuard>} />
