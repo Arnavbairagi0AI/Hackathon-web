@@ -1,9 +1,17 @@
 import { lazy, Suspense, useEffect, type ReactNode } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import { AppProvider, useApp } from './lib/store';
+import { SchemeProvider } from './lib/schemeStore';
 import { I18nProvider } from './lib/i18n';
 import { ToastHost } from './components/ui';
 import { AppShell, Guard, Splash } from './components/layout';
+
+const SchemeProfile = lazy(() => import('./pages/schemes/ApplicantProfile'));
+const SchemeEligibility = lazy(() => import('./pages/schemes/Eligibility'));
+const SchemeRepayment = lazy(() => import('./pages/schemes/Repayment'));
+const SchemePartners = lazy(() => import('./pages/schemes/PartnerLocator'));
+const SchemeRecommendation = lazy(() => import('./pages/schemes/Recommendation'));
+const SchemeSources = lazy(() => import('./pages/schemes/Sources'));
 import Landing from './pages/Landing';
 import { LoginPage, SignupPage, ForgotPage } from './pages/Auth';
 import { FounderOnboarding, InvestorOnboarding } from './pages/Onboarding';
@@ -63,6 +71,7 @@ export default function App() {
   return (
     <I18nProvider>
       <AppProvider>
+        <SchemeProvider>
         <BrowserRouter>
           <ScrollToTop />
           <Routes>
@@ -84,6 +93,14 @@ export default function App() {
             {/* app */}
             <Route path="/app" element={<Guard><AppShell /></Guard>}>
               <Route index element={<Navigate to="dashboard" replace />} />
+              {/* scheme-eligibility flow (SIH26092) */}
+              <Route path="schemes" element={<L><SchemeSources /></L>} />
+              <Route path="schemes/profile" element={<L><SchemeProfile /></L>} />
+              <Route path="schemes/eligibility" element={<L><SchemeEligibility /></L>} />
+              <Route path="schemes/repayment" element={<L><SchemeRepayment /></L>} />
+              <Route path="schemes/partners" element={<L><SchemePartners /></L>} />
+              <Route path="schemes/recommendation" element={<L><SchemeRecommendation /></L>} />
+              <Route path="schemes/about" element={<L><SchemeSources /></L>} />
               <Route path="dashboard" element={<L><DashboardRouter /></L>} />
               <Route path="matching" element={<Guard roles={['founder', 'investor']}><L><Matching /></L></Guard>} />
               <Route path="connections" element={<Guard roles={['founder', 'investor']}><L><Connections /></L></Guard>} />
@@ -108,6 +125,7 @@ export default function App() {
           </Routes>
           <ToastHost />
         </BrowserRouter>
+        </SchemeProvider>
       </AppProvider>
     </I18nProvider>
   );

@@ -12,6 +12,7 @@ import { fmtL, runway, timeAgo, fmtDay } from '../lib/format';
 import { readinessOf, readinessTone } from '../lib/finance';
 import { rankMatches, rankStartups } from '../lib/match';
 import { seedEvents } from '../lib/data';
+import SchemeJourneyCard from './schemes/SchemeJourneyCard';
 
 function useFakeLoad(ms = 650) {
   const [loading, setLoading] = useState(true);
@@ -244,6 +245,11 @@ export function FounderDashboard() {
           ))}
         </div>
       </Card>
+
+      {/* scheme-eligibility journey (SIH26092) */}
+      <div className="mt-5 grid gap-5 lg:grid-cols-2">
+        <SchemeJourneyCard />
+      </div>
     </div>
   );
 }

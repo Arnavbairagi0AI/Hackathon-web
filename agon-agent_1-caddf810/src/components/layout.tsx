@@ -5,6 +5,7 @@ import {
   LayoutDashboard, Sparkles, MessageSquare, Users, Compass, Landmark, GraduationCap,
   Rocket, ShieldCheck, Bell, Search, Globe, LogOut, RotateCcw,
   Briefcase, GitBranch, Building2, UserRound, CircleHelp, X, ChevronRight, Menu, Newspaper, HelpCircle,
+  BadgeIndianRupee,
 } from 'lucide-react';
 import { useApp } from '../lib/store';
 import { useI18n, langs } from '../lib/i18n';
@@ -58,6 +59,7 @@ function resItems(): NavItem[] {
     { to: '/app/learning', icon: <GraduationCap size={17} />, key: 'nav.learning' },
     { to: '/app/market', icon: <Building2 size={17} />, key: 'nav.market' },
     { to: '/app/schemes', icon: <Briefcase size={17} />, key: 'nav.schemes' },
+    { to: '/app/schemes/profile', icon: <BadgeIndianRupee size={17} />, label: 'Scheme Eligibility' },
     { to: '/app/news', icon: <Newspaper size={17} />, key: 'nav.news' },
     { to: '/app/faq', icon: <HelpCircle size={17} />, key: 'nav.faq' },
   ];
