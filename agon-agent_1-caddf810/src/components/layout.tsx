@@ -5,10 +5,11 @@ import {
   LayoutDashboard, Sparkles, MessageSquare, Users, Compass, Landmark, GraduationCap,
   Rocket, ShieldCheck, Bell, Search, Globe, LogOut, RotateCcw,
   Briefcase, GitBranch, Building2, UserRound, CircleHelp, X, ChevronRight, Menu, Newspaper, HelpCircle,
+  BadgeIndianRupee,
 } from 'lucide-react';
 import { useApp } from '../lib/store';
 import { useI18n, langs } from '../lib/i18n';
-import { Logo, Avatar, Chip, Btn, toast } from './ui';
+import { Logo, Avatar, Chip, toast } from './ui';
 import type { Role } from '../lib/types';
 import { timeAgo } from '../lib/format';
 
@@ -32,7 +33,7 @@ function useNav(): NavSection[] {
         { to: '/app/admin', icon: <ShieldCheck size={17} />, key: 'nav.admin' },
         { to: '/app/notifications', icon: <Bell size={17} />, key: 'nav.notifications', badge: unreadN },
       ]},
-      { key: 'sec.resources', labelI: 'sec.resources', items: resItems() },
+      { key: 'sec.resources', labelI: 'sec.resources', items: resItems(false) },
     ];
   }
   const founder = user?.role === 'founder';
@@ -49,15 +50,18 @@ function useNav(): NavSection[] {
       { to: '/app/messages', icon: <MessageSquare size={17} />, key: 'nav.messages' },
       { to: '/app/community', icon: <Users size={17} />, key: 'nav.community' },
     ]},
-    { key: 'sec.resources', labelI: 'sec.resources', items: resItems() },
+    { key: 'sec.resources', labelI: 'sec.resources', items: resItems(founder) },
   ];
 }
-function resItems(): NavItem[] {
+function resItems(founder: boolean): NavItem[] {
   return [
     { to: '/app/events', icon: <Landmark size={17} />, key: 'nav.events' },
     { to: '/app/learning', icon: <GraduationCap size={17} />, key: 'nav.learning' },
     { to: '/app/market', icon: <Building2 size={17} />, key: 'nav.market' },
     { to: '/app/schemes', icon: <Briefcase size={17} />, key: 'nav.schemes' },
+    // The scheme-eligibility journey is founder-guarded in App.tsx; only
+    // founders get the nav link so no role sees a link it cannot open.
+    ...(founder ? [{ to: '/app/schemes/profile', icon: <BadgeIndianRupee size={17} />, label: 'Scheme Eligibility' }] : []),
     { to: '/app/news', icon: <Newspaper size={17} />, key: 'nav.news' },
     { to: '/app/faq', icon: <HelpCircle size={17} />, key: 'nav.faq' },
   ];
