@@ -93,14 +93,15 @@ export default function App() {
             {/* app */}
             <Route path="/app" element={<Guard><AppShell /></Guard>}>
               <Route index element={<Navigate to="dashboard" replace />} />
-              {/* scheme-eligibility flow (SIH26092) */}
-              <Route path="schemes" element={<L><SchemeSources /></L>} />
-              <Route path="schemes/profile" element={<L><SchemeProfile /></L>} />
-              <Route path="schemes/eligibility" element={<L><SchemeEligibility /></L>} />
-              <Route path="schemes/repayment" element={<L><SchemeRepayment /></L>} />
-              <Route path="schemes/partners" element={<L><SchemePartners /></L>} />
-              <Route path="schemes/recommendation" element={<L><SchemeRecommendation /></L>} />
-              <Route path="schemes/about" element={<L><SchemeSources /></L>} />
+              {/* scheme-eligibility flow (SIH26092) — founder-facing, same guard pattern as matching/tracker.
+                  NOTE: no `schemes` index route here — the base app owns /app/schemes (Schemes & Policies
+                  content, all roles). The founder journey starts at /app/schemes/profile. */}
+              <Route path="schemes/profile" element={<Guard roles={['founder']}><L><SchemeProfile /></L></Guard>} />
+              <Route path="schemes/eligibility" element={<Guard roles={['founder']}><L><SchemeEligibility /></L></Guard>} />
+              <Route path="schemes/repayment" element={<Guard roles={['founder']}><L><SchemeRepayment /></L></Guard>} />
+              <Route path="schemes/partners" element={<Guard roles={['founder']}><L><SchemePartners /></L></Guard>} />
+              <Route path="schemes/recommendation" element={<Guard roles={['founder']}><L><SchemeRecommendation /></L></Guard>} />
+              <Route path="schemes/about" element={<Guard roles={['founder']}><L><SchemeSources /></L></Guard>} />
               <Route path="dashboard" element={<L><DashboardRouter /></L>} />
               <Route path="matching" element={<Guard roles={['founder', 'investor']}><L><Matching /></L></Guard>} />
               <Route path="connections" element={<Guard roles={['founder', 'investor']}><L><Connections /></L></Guard>} />
