@@ -1,15 +1,18 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react';
+import { useApp } from './store';
 import { EMPTY_PROFILE, type Profile, type StepId } from './schemeTypes';
 
 /* ============================================================
    Scheme-flow store — ported from the standalone prototype,
    adapted to the platform's context pattern (same shape as
-   lib/store.tsx: provider + hook). Persists to localStorage so
-   a founder's scheme journey survives reloads. No backend.
+   lib/store.tsx: provider + hook). Persists to localStorage per
+   signed-in user so two founders never share journey state.
+   Falls back to an anonymous slot when signed out. No backend.
    ============================================================ */
 
-
-const KEY = 'venturesetu.scheme.v1';
+const KEY_PREFIX = 'venturesetu.scheme.v1';
+const LEGACY_KEY = 'venturesetu.scheme.v1';
+const keyFor = (userId: string | null) => `${KEY_PREFIX}:${userId ?? 'anon'}`;
 
 interface Persisted {
   profile: Profile;
@@ -25,9 +28,18 @@ const initial: Persisted = {
   selectedPartnerId: null,
 };
 
-function load(): Persisted {
+function load(key: string): Persisted {
   try {
-    const raw = localStorage.getItem(KEY);
+    let raw = localStorage.getItem(key);
+    // One-time adoption of the pre-per-user key so a founder who
+    // completed the journey before this change doesn't lose it.
+    if (!raw) {
+      raw = localStorage.getItem(LEGACY_KEY);
+      if (raw) {
+        localStorage.setItem(key, raw);
+        localStorage.removeItem(LEGACY_KEY);
+      }
+    }
     if (!raw) return initial;
     const p = JSON.parse(raw) as Partial<Persisted>;
     return {
@@ -52,15 +64,26 @@ interface SchemeCtx extends Persisted {
 const Ctx = createContext<SchemeCtx | null>(null);
 
 export function SchemeProvider({ children }: { children: ReactNode }) {
-  const [state, setState] = useState<Persisted>(load);
+  const { user } = useApp();
+  const uid = user?.id ?? null;
+  const [state, setState] = useState<Persisted>(() => load(keyFor(uid)));
+
+  // Swap the in-memory state when the signed-in user changes — set
+  // during render (React's documented "adjust state when a prop
+  // changes" pattern), so the new user's journey shows immediately.
+  const [prevUid, setPrevUid] = useState(uid);
+  if (prevUid !== uid) {
+    setPrevUid(uid);
+    setState(load(keyFor(uid)));
+  }
 
   useEffect(() => {
     try {
-      localStorage.setItem(KEY, JSON.stringify(state));
+      localStorage.setItem(keyFor(uid), JSON.stringify(state));
     } catch {
       /* session-only mode */
     }
-  }, [state]);
+  }, [state, uid]);
 
   const store: SchemeCtx = {
     ...state,

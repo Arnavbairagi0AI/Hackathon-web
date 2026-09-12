@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ClipboardList, Lock, CheckCircle2, ArrowRight } from 'lucide-react';
+import { ClipboardList, Lock, CheckCircle2, TriangleAlert, ArrowRight } from 'lucide-react';
 import { Card, CardHead, Chip, Field, Input, Select, Btn } from '../../components/ui';
 import { SchemePageHead, JourneyStrip, BackLink } from './parts';
 import { useScheme } from '../../lib/schemeStore';
@@ -35,8 +35,18 @@ export default function ApplicantProfile() {
 
   const errCls = (k: keyof Profile, ok: boolean) =>
     touched[k] && !ok ? 'border-rose-400/50 bg-rose-400/[.06]' : touched[k] && ok ? 'border-emerald-400/40' : '';
-  const fieldError = (k: keyof Profile, msg: string) =>
-    touched[k] ? <span role="alert" className="mt-1 block text-[11px] font-medium text-rose-300">{msg}</span> : null;
+  // An error is shown only while the field is actually invalid — it
+  // clears the moment the user fixes the value (as in the original page).
+  const loanExceeds = profile.projectCostL > 0 && profile.requiredLoanL > profile.projectCostL;
+  const errors: Partial<Record<keyof Profile, string>> = {};
+  if (touched.education && !profile.education) errors.education = 'Select your education level.';
+  if (touched.projectType && !profile.projectType) errors.projectType = 'Select your project type.';
+  if (touched.projectCostL && profile.projectCostL <= 0) errors.projectCostL = 'Enter the estimated project cost.';
+  if (touched.requiredLoanL && profile.requiredLoanL <= 0) errors.requiredLoanL = 'Enter the loan amount you need.';
+  else if (touched.requiredLoanL && loanExceeds) errors.requiredLoanL = 'Loan needed can’t exceed the total project cost.';
+  if (touched.location && !profile.location) errors.location = 'Select your state.';
+  const fieldError = (k: keyof Profile) =>
+    errors[k] ? <span role="alert" className="mt-1 block text-[11px] font-medium text-rose-300">{errors[k]}</span> : null;
 
   const submit = () => {
     setTouched({ projectType: true, projectCostL: true, requiredLoanL: true, location: true, education: true });
@@ -90,7 +100,7 @@ export default function ApplicantProfile() {
               <option value="">Select education…</option>
               {EDUCATION_LEVELS.map(l => <option key={l.value} value={l.value}>{l.label}</option>)}
             </Select>
-            {fieldError('education', 'Select your education level.')}
+            {fieldError('education')}
           </Field>
 
           <Field label="Project type" required>
@@ -102,7 +112,7 @@ export default function ApplicantProfile() {
               <option value="">Select project type…</option>
               {PROJECT_TYPES.map(t => <option key={t.id} value={t.id}>{t.label}</option>)}
             </Select>
-            {fieldError('projectType', 'Select your project type.')}
+            {fieldError('projectType')}
           </Field>
 
           <Field label="Project cost" hint="₹ lakh" required>
@@ -113,7 +123,7 @@ export default function ApplicantProfile() {
               onChange={e => set('projectCostL', Math.max(0, Number(e.target.value) || 0))}
               placeholder="e.g. 8"
             />
-            {fieldError('projectCostL', 'Enter the estimated project cost.')}
+            {fieldError('projectCostL')}
           </Field>
 
           <Field
@@ -130,7 +140,7 @@ export default function ApplicantProfile() {
               onChange={e => set('requiredLoanL', Math.max(0, Number(e.target.value) || 0))}
               placeholder="e.g. 5"
             />
-            {fieldError('requiredLoanL', 'Enter the loan amount you need.')}
+            {fieldError('requiredLoanL')}
           </Field>
 
           <Field label="Location" hint="state" required>
@@ -142,9 +152,22 @@ export default function ApplicantProfile() {
               <option value="">Select state…</option>
               {STATES.map(s => <option key={s} value={s}>{s}</option>)}
             </Select>
-            {fieldError('location', 'Select your state.')}
+            {fieldError('location')}
           </Field>
         </div>
+
+        {/* cross-field notice — loan exceeds project cost */}
+        {profile.requiredLoanL > 0 && loanExceeds && (
+          <div className="mx-5 mb-4 flex items-start gap-2.5 rounded-xl border border-gold-500/25 bg-gold-500/[.08] px-4 py-3">
+            <TriangleAlert size={15} className="mt-0.5 shrink-0 text-gold-400" />
+            <div>
+              <p className="text-[12.5px] font-semibold text-gold-200">Loan amount exceeds project cost.</p>
+              <p className="mt-0.5 text-[11.5px] text-white/55">
+                Scheme rules fund a share of the project cost — reduce the loan or increase the project cost.
+              </p>
+            </div>
+          </div>
+        )}
 
         <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/[.06] px-5 py-4">
           <p className="flex items-center gap-1.5 text-[11.5px] text-white/40">

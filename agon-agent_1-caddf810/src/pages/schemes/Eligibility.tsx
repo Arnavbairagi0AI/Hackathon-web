@@ -1,12 +1,11 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useReducer } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Sparkles, UserRound } from 'lucide-react';
 import { Card, CardHead, Chip, Btn, EmptyState } from '../../components/ui';
 import SchemeCard from './SchemeCard';
 import { SchemePageHead, JourneyStrip, BackLink, MockDataNote } from './parts';
 import { useScheme } from '../../lib/schemeStore';
-import { recommendSchemes } from '../../lib/eligibility';
-import type { Profile } from '../../lib/schemeTypes';
+import { recommendSchemes, profileValid } from '../../lib/eligibility';
 
 /* ============================================================
    /app/schemes/eligibility — results first. Calls the ported
@@ -14,8 +13,7 @@ import type { Profile } from '../../lib/schemeTypes';
    rebuilt on the platform design system.
    ============================================================ */
 
-const profileValid = (p: Profile) =>
-  Boolean(p.education && p.projectType && p.location && p.projectCostL > 0 && p.requiredLoanL > 0);
+let lastRunKey: string | null = null;
 
 export default function Eligibility() {
   const scheme = useScheme();
@@ -25,18 +23,22 @@ export default function Eligibility() {
 
   const matches = useMemo(() => (valid ? recommendSchemes(profile) : []), [valid, profile]);
 
-  // Brief computed-matching pause on first arrival / profile change.
-  // Uses the render-time `valid` as initial state and flips it only in
-  // the timeout callback; the rule still flags the sync call below, so
-  // it is disabled with rationale.
-  const [loading, setLoading] = useState(valid);
+  // Brief computed-matching pause on the first run for a profile. The
+  // "last computed profile" key lives in module scope (survives route
+  // remounts) and `loading` is DERIVED from it, so the spinner can never
+  // get stuck — any render where the profile matches the last computed
+  // one shows results immediately, StrictMode double-invoke included.
+  const [, forceRender] = useReducer(x => x + 1, 0);
   const profileKey = `${profile.projectType}|${profile.projectCostL}|${profile.requiredLoanL}|${profile.location}|${profile.education}`;
+  const loading = valid && lastRunKey !== profileKey;
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    setLoading(true);
-    const t = setTimeout(() => setLoading(false), 700);
+    if (!loading) return;
+    const t = setTimeout(() => {
+      lastRunKey = profileKey;
+      forceRender();
+    }, 700);
     return () => clearTimeout(t);
-  }, [profileKey]);
+  }, [loading, profileKey]);
 
   const eligible = matches.filter(m => m.status !== 'not-eligible');
   const notEligible = matches.filter(m => m.status === 'not-eligible');
@@ -112,6 +114,13 @@ export default function Eligibility() {
               />
             ))}
           </div>
+
+          {eligible.length === 0 && (
+            <p className="rounded-xl border border-white/10 bg-white/[.03] px-4 py-3 text-[12px] text-white/50">
+              No scheme in the prototype catalogue matches these answers. Try a lower loan amount or a different
+              category — the prototype data covers only a small sample of India's schemes.
+            </p>
+          )}
 
           {notEligible.length > 0 && (
             <details className="group mt-4">
