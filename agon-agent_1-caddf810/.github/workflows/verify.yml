@@ -1,0 +1,36 @@
+name: verify
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      - name: Typecheck
+        run: npx tsc -b
+
+      # Scoped to the scheme-flow files this branch adds/changes; the
+      # repo-wide lint pass still reports pre-existing errors elsewhere
+      # (e.g. Dashboards.tsx) tracked separately.
+      - name: Lint (scheme flow)
+        run: >
+          npx eslint src/lib/schemeStore.tsx src/lib/schemeJourney.ts
+          src/lib/schemeTypes.ts src/lib/eligibility.ts
+          src/utils/repayment.ts src/data src/pages/schemes
+          src/App.tsx src/components/layout.tsx
+
+      - name: Build
+        run: npm run build
