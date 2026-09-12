@@ -112,10 +112,6 @@ export interface VEvent {
   desc: string; tags: string[]; featured?: boolean;
 }
 
-export interface Track {
-  id: string; title: string; level: string; mins: number; lessons: number;
-  done: number; desc: string; author: string; hue: number; tags: string[];
-}
 
 export interface Scheme {
   id: string; name: string; by: string; benefit: string; elig: string[];

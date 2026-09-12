@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import type { User, Startup, Investor, Connection, Thread, Msg, Channel, Notice, Track, Audit, Flag, Session, Role, Lang } from './types';
+import type { User, Startup, Investor, Connection, Thread, Msg, Channel, Notice, Audit, Flag, Session, Role, Lang } from './types';
 import {
   seedUsers, seedStartups, seedInvestors, seedConnections, seedThreads,
-  founderChannels, investorChannels, seedNotices, seedTracks, seedAudits, seedFlags,
+  founderChannels, investorChannels, seedNotices, seedAudits, seedFlags,
 } from './data';
 import { uid, MIN, DAY, fmtL } from './format';
 
@@ -20,7 +20,7 @@ interface DB {
   connections: Connection[]; threads: Thread[];
   fChannels: Channel[]; iChannels: Channel[];
   noticesF: Notice[]; noticesI: Notice[];
-  tracks: Track[]; rsvps: string[]; audits: Audit[]; flags: Flag[];
+  rsvps: string[]; audits: Audit[]; flags: Flag[];
   hashed: boolean;
 }
 
@@ -37,7 +37,7 @@ function freshDB(): DB {
       { id: 'ni4', type: 'milestone', title: 'Pipeline review Friday 9:30', body: 'Morning Deals Briefing voice room — 3 active opportunities on agenda.', ts: Date.now() - 2 * DAY, read: true, link: '/app/community' },
       { id: 'ni5', type: 'security', title: 'New sign-in · Safari on iPhone', body: 'Mumbai, IN · verified device.', ts: Date.now() - 6 * 3_600_000, read: true, link: '/app/notifications' },
     ] as Notice[],
-    tracks: seedTracks, rsvps: ['ev-2'], audits: seedAudits, flags: seedFlags,
+    rsvps: ['ev-2'], audits: seedAudits, flags: seedFlags,
     hashed: false,
   }));
 }
@@ -76,7 +76,6 @@ interface AppCtx {
   markRead: (role: 'founder' | 'investor', id?: string) => void;
   pushNotice: (n: Omit<Notice, 'id' | 'ts' | 'read'>, role?: 'founder' | 'investor') => void;
   rsvp: (eventId: string) => void;
-  progressLesson: (trackId: string) => void;
   updateStartup: (id: string, patch: Partial<Startup>) => void;
   toggleDeckShare: (startupId: string, investorId: string) => void;
   attachDeck: (startupId: string, name: string, sizeKB: number) => void;
@@ -426,10 +425,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     },
 
     rsvp: (eventId) => setDb(prev => ({ ...prev, rsvps: prev.rsvps.includes(eventId) ? prev.rsvps.filter(x => x !== eventId) : [...prev.rsvps, eventId] })),
-
-    progressLesson: (trackId) => setDb(prev => ({
-      ...prev, tracks: prev.tracks.map(t => t.id === trackId ? { ...t, done: Math.min(t.lessons, t.done + 1) } : t),
-    })),
 
     updateStartup: (id, patch) => setDb(prev => ({ ...prev, startups: prev.startups.map(s => s.id === id ? { ...s, ...patch } : s) })),
 

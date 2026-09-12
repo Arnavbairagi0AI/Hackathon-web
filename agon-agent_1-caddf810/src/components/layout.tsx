@@ -2,7 +2,7 @@ import { useMemo, useState, type ReactNode } from 'react';
 import { Link, NavLink, Outlet, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  LayoutDashboard, Sparkles, MessageSquare, Users, Compass, Landmark, GraduationCap,
+  LayoutDashboard, Sparkles, MessageSquare, Users, Compass, Landmark,
   Rocket, ShieldCheck, Bell, Search, Globe, LogOut, RotateCcw,
   Briefcase, GitBranch, Building2, UserRound, CircleHelp, X, ChevronRight, Menu, Newspaper, HelpCircle,
   BadgeIndianRupee,
@@ -56,7 +56,6 @@ function useNav(): NavSection[] {
 function resItems(founder: boolean): NavItem[] {
   return [
     { to: '/app/events', icon: <Landmark size={17} />, key: 'nav.events' },
-    { to: '/app/learning', icon: <GraduationCap size={17} />, key: 'nav.learning' },
     { to: '/app/market', icon: <Building2 size={17} />, key: 'nav.market' },
     { to: '/app/schemes', icon: <Briefcase size={17} />, key: 'nav.schemes' },
     // The scheme-eligibility journey is founder-guarded in App.tsx; only
