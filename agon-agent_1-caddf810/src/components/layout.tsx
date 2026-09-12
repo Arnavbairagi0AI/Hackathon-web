@@ -2,7 +2,7 @@ import { useMemo, useState, type ReactNode } from 'react';
 import { Link, NavLink, Outlet, useLocation, useNavigate, Navigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
-  LayoutDashboard, Sparkles, MessageSquare, Users, Compass, Landmark, GraduationCap,
+  LayoutDashboard, Sparkles, MessageSquare, Users, Compass, Landmark,
   Rocket, ShieldCheck, Bell, Search, Globe, LogOut, RotateCcw,
   Briefcase, GitBranch, Building2, UserRound, CircleHelp, X, ChevronRight, Menu, Newspaper, HelpCircle,
   BadgeIndianRupee,
